@@ -78,6 +78,12 @@
 
 <dependency>
 	<groupId>net.sourceforge.pmd</groupId>
+	<artifactId>pmd-java</artifactId>
+	<version>5.2.3</version>
+</dependency>
+
+<dependency>
+	<groupId>net.sourceforge.pmd</groupId>
 	<artifactId>pmd-core</artifactId>
 	<version>5.2.3</version>
 </dependency>

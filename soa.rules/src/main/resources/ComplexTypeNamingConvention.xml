@@ -13,7 +13,7 @@ message='Use upper camel case when naming elements that are complex types. This 
 <properties>
 <property name="xpath">
 <value><![CDATA[
-schema/complexType[@id]
+//cdata-section[starts-with(@Image,'[') or ends-with(@Image,']')]
 ]]></value>
 </property>
 <!-- xs:schema/xs:complexType[@name]

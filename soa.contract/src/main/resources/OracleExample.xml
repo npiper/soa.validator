@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/Controller" version="1.2">
+  <task-flow-definition id="task-flow-definition">
+   <use-page-fragments/>
+    <task-flow-call id="taskFlowCall">
+      <task-flow-reference>
+        <document>/WEB-INF/target-task-flow-definition.xml</document>
+        <id>my-task-flow</id>
+      </task-flow-reference>
+    </task-flow-call>  
+  </task-flow-definition>
+</adfc-config>
