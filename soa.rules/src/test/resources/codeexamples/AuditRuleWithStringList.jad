@@ -1,0 +1,94 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   AuditRuleWithStringList.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import java.util.Arrays;
+import org.eclipse.core.runtime.Preferences;
+
+public abstract class AuditRuleWithStringList extends XMLFileAuditRule
+{
+
+    public AuditRuleWithStringList()
+    {
+    }
+
+    public String[] getPrefixes()
+    {
+        if(prefixList == null)
+        {
+            String preferenceName = getPreferenceIdentifier() + ".prefixList";
+            getPreferenceStore().setDefault(preferenceName, toString(getDefaultPreffixes()));
+            String value = getPreferenceStore().getString(preferenceName);
+            if(value.length() == 0)
+            {
+                prefixList = new String[0];
+            } else
+            {
+                String info[] = StringUtilities.splitString(value, ";", true);
+                prefixList = (String[])info.clone();
+            }
+        }
+        return prefixList;
+    }
+
+    private String toString(String prefixes[])
+    {
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < prefixes.length; i++)
+        {
+            if(i > 0)
+                buffer.append(';');
+            buffer.append(prefixes[i]);
+        }
+
+        return buffer.toString();
+    }
+
+    public String[] getDefaultPreffixes()
+    {
+        return DEFAULT_PREFIXES;
+    }
+
+    public void setPrefixes(String prefixes[])
+    {
+        String preferenceName = getPreferenceIdentifier() + ".prefixList";
+        getPreferenceStore().setValue(preferenceName, toString(prefixes));
+        prefixList = prefixes;
+    }
+
+    public void addPrefix(String signature)
+    {
+        String oldPrefixes[] = getPrefixes();
+        int count = oldPrefixes.length;
+        String newPrefixes[] = new String[count + 1];
+        System.arraycopy(oldPrefixes, 0, newPrefixes, 0, count);
+        newPrefixes[count] = signature;
+        Arrays.sort(newPrefixes, String.CASE_INSENSITIVE_ORDER);
+        setPrefixes(newPrefixes);
+    }
+
+    public boolean getRequiresParameters()
+    {
+        return true;
+    }
+
+    public boolean containPrefix(String targetString)
+    {
+        String prefixes[] = getPrefixes();
+        for(int i = 0; i < prefixes.length; i++)
+            if(targetString.startsWith(prefixes[i]))
+                return true;
+
+        return false;
+    }
+
+    private static final String DEFAULT_PREFIXES[] = new String[0];
+    private static final String PREFIXES_LIST = ".prefixList";
+    private String prefixList[];
+
+}

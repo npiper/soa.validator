@@ -1,0 +1,63 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   UseQualifiedAttributesAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class UseQualifiedAttributesAuditRule extends XMLFileAuditRule
+{
+    public class UseQualifiedAttributesCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String fullTagName = node.getTagName();
+            String splitedName[] = StringUtilities.splitString(fullTagName, ":", true);
+            String name = splitedName[splitedName.length - 1];
+            if(!name.equals("schema"))
+                return true;
+            String valueFirst = node.getValue(UseQualifiedAttributesAuditRule.attributeNames[0]);
+            String valueSecond = node.getValue(UseQualifiedAttributesAuditRule.attributeNames[1]);
+            if(valueFirst == null || !valueFirst.equals("qualified"))
+                createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.useQualifiedAttributes.use", com.instantiations.eclipse.analysis.audit.webservices.UseQualifiedAttributesAuditRule);
+            if(valueSecond == null || !valueSecond.equals("qualified"))
+                createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.useQualifiedAttributes.use", com.instantiations.eclipse.analysis.audit.webservices.UseQualifiedAttributesAuditRule);
+            return true;
+        }
+
+        public UseQualifiedAttributesCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public UseQualifiedAttributesAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new UseQualifiedAttributesCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG = "schema";
+    private static final String attributeNames[] = {
+        "elementFormDefault", "attributeFormDefault"
+    };
+    private static final String QUALIFIED = "qualified";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.useQualifiedAttributes.use";
+
+
+
+}

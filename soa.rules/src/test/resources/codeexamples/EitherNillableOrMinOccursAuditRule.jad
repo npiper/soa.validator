@@ -1,0 +1,58 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   EitherNillableOrMinOccursAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class EitherNillableOrMinOccursAuditRule extends XMLFileAuditRule
+{
+    public class EitherNillableOrMinOccursCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitedTN[] = StringUtilities.splitString(tagName, ":", true);
+            String focus = splitedTN[splitedTN.length - 1];
+            if(focus.equals("element"))
+            {
+                String valueMinOccurs = node.getValue("minOccurs");
+                String valueNillable = node.getValue("nillable");
+                if(valueMinOccurs != null && valueNillable != null && valueMinOccurs.equals("0") && valueNillable.equals("true"))
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.eitherNillableOrMinOccurs.use", _22_element_22_);
+            }
+            return true;
+        }
+
+        public EitherNillableOrMinOccursCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            SimpleViolationForXMLCodeAuditor(context, item);
+        }
+    }
+
+
+    public EitherNillableOrMinOccursAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new EitherNillableOrMinOccursCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG = "element";
+    private static final String MIN_OCCURS = "minOccurs";
+    private static final String NILLABLE = "nillable";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.eitherNillableOrMinOccurs.use";
+
+}

@@ -1,0 +1,79 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   ResponseMessageNamingConventionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.jlib.xml.XMLElement;
+import java.util.LinkedList;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class ResponseMessageNamingConventionAuditRule extends XMLFileAuditRule
+{
+    private class ResponseMessageNamingConventionCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            if("wsdl:operation".equals(tagName))
+            {
+                com.instantiations.jlib.xml.XMLNode children[] = node.getChildren();
+                String nameOper = node.getValue("name");
+                if(nameOper == null)
+                    return true;
+                String nameOfOperation = nameOper + "Response";
+                for(int i = 0; i < children.length; i++)
+                {
+                    com.instantiations.jlib.xml.XMLNode child = children[i];
+                    if(child instanceof XMLElement)
+                    {
+                        XMLElement tmp = (XMLElement)child;
+                        String tagChName = tmp.getTagName();
+                        if(ResponseMessageNamingConventionAuditRule.TAGS.contains(tagChName))
+                        {
+                            String nameValue = tmp.getValue("name");
+                            if(nameValue == null || !nameValue.equals(nameOfOperation))
+                                createViolation(tmp, "com.instantiations.eclipse.analysis.audit.webservices.responseMessageNamingConvention.match", new String[] {
+                                    nameValue
+                                });
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public ResponseMessageNamingConventionCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public ResponseMessageNamingConventionAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new ResponseMessageNamingConventionCodeAuditor(context, this);
+    }
+
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.responseMessageNamingConvention.match";
+    private static final String TAG_NAME = "wsdl:operation";
+    private static final LinkedList TAGS;
+
+    static 
+    {
+        TAGS = new LinkedList();
+        TAGS.add("wsdl:output");
+    }
+
+}

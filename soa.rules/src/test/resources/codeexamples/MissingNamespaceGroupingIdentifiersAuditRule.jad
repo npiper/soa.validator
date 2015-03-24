@@ -1,0 +1,58 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   MissingNamespaceGroupingIdentifiersAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class MissingNamespaceGroupingIdentifiersAuditRule extends XMLFileAuditRule
+{
+    public class MissingNamespaceGroupingIdentifiersCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String tagNameSplited[] = StringUtilities.splitString(tagName, ":", true);
+            String realTagName = tagNameSplited[tagNameSplited.length - 1];
+            if(realTagName.equals("definitions"))
+            {
+                String serviceName = node.getValue("name");
+                if(serviceName == null)
+                {
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.missingNamespaceGroupingIdentifiers.missing", 
+// JavaClassFileOutputException: get_constant: invalid tag
+
+        public MissingNamespaceGroupingIdentifiersCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public MissingNamespaceGroupingIdentifiersAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new MissingNamespaceGroupingIdentifiersCodeAuditor(context, this);
+    }
+
+    private final String TAG_NAME = "definitions";
+    private final String TARGET_NAMESPACE = "targetNamespace";
+    private final String DEFAULT_NAMESPACE = "xmlns";
+    private final String XSD1_NAMESPACE = "xsd1";
+    private final String TNS_NAMESPACE = "tns";
+    private final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.missingNamespaceGroupingIdentifiers.missing";
+
+}

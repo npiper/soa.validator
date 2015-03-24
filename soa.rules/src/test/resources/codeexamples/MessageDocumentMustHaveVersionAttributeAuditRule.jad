@@ -1,0 +1,87 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   MessageDocumentMustHaveVersionAttributeAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class MessageDocumentMustHaveVersionAttributeAuditRule extends XMLFileAuditRule
+{
+    private class MessageDocumentMustHaveVersionAttributeCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splited[] = StringUtilities.splitString(tagName, ":", true);
+            String focus = splited[splited.length - 1];
+            if("message".equals(focus))
+            {
+                com.instantiations.jlib.xml.XMLNode elements[] = node.getChildren();
+                boolean flag = false;
+                for(int i = 0; i < elements.length; i++)
+                {
+                    com.instantiations.jlib.xml.XMLNode elem = elements[i];
+                    if(elem instanceof XMLElement)
+                    {
+                        XMLElement tmp = (XMLElement)elem;
+                        String tagAttrName = tmp.getTagName();
+                        splited = StringUtilities.splitString(tagAttrName, ":", true);
+                        focus = splited[splited.length - 1];
+                        if("attribute".equals(focus))
+                        {
+                            flag = true;
+                            String name = tmp.getValue("name");
+                            String type = tmp.getValue("type");
+                            String use = tmp.getValue("use");
+                            String fixed = tmp.getValue("fixed");
+                            if(name == null || type == null || use == null || fixed == null)
+                            {
+                                createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.messageDocumentMustHaveVersionAttribute.has", splitString);
+                                return true;
+                            }
+                            if(!name.equals("schemaVersion") || !type.equals("decimal") || !use.equals("required"))
+                            {
+                                createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.messageDocumentMustHaveVersionAttribute.has", splitString);
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                if(!flag)
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.messageDocumentMustHaveVersionAttribute.has", splitString);
+            }
+            return true;
+        }
+
+        public MessageDocumentMustHaveVersionAttributeCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public MessageDocumentMustHaveVersionAttributeAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new MessageDocumentMustHaveVersionAttributeCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG = "message";
+    private static final String ATTRIBUTE_TAG = "attribute";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.messageDocumentMustHaveVersionAttribute.has";
+
+}

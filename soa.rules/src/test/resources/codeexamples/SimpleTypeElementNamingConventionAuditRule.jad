@@ -1,0 +1,58 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   SimpleTypeElementNamingConventionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class SimpleTypeElementNamingConventionAuditRule extends XMLFileAuditRule
+{
+    public class SimpleTypeElementNamingConventionCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitedTN[] = StringUtilities.splitString(tagName, ":", true);
+            String focus = splitedTN[splitedTN.length - 1];
+            if(focus.equals("element"))
+            {
+                String name = node.getValue("name");
+                String type = node.getValue("type");
+                if(name == null || type == null)
+                    return true;
+                if(Character.isLowerCase(type.charAt(0)) && !Character.isLowerCase(name.charAt(0)))
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.simpleTypeElementNamingConvention.isLowerCase", new String[] {
+                        name
+                    });
+            }
+            return true;
+        }
+
+        public SimpleTypeElementNamingConventionCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public SimpleTypeElementNamingConventionAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new SimpleTypeElementNamingConventionCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG = "element";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.simpleTypeElementNamingConvention.isLowerCase";
+}

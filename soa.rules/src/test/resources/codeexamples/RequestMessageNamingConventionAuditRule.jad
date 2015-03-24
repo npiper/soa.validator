@@ -1,0 +1,84 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   RequestMessageNamingConventionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class RequestMessageNamingConventionAuditRule extends XMLFileAuditRule
+{
+    private class RequestMessageNamingConventionCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            if("wsdl:operation".equals(tagName))
+            {
+                com.instantiations.jlib.xml.XMLNode children[] = node.getChildren();
+                String nameOper = node.getValue("name");
+                if(nameOper == null)
+                    return true;
+                for(int i = 0; i < children.length; i++)
+                {
+                    com.instantiations.jlib.xml.XMLNode child = children[i];
+                    if(child instanceof XMLElement)
+                    {
+                        XMLElement tmp = (XMLElement)child;
+                        String tagChName = tmp.getTagName();
+                        boolean flag = false;
+                        for(int j = 0; j < RequestMessageNamingConventionAuditRule.INNER_TAGS.length; j++)
+                            if(RequestMessageNamingConventionAuditRule.INNER_TAGS[j].equals(tagChName))
+                                flag = true;
+
+                        if(flag)
+                        {
+                            String nameValue = tmp.getValue("name");
+                            if(nameValue == null)
+                                createViolation(tmp, "com.instantiations.eclipse.analysis.audit.webservices.requestMessageNamingConvention.match", new String[] {
+                                    "<unnamed>"
+                                });
+                            else
+                            if(!nameValue.equals(nameOper))
+                                createViolation(tmp, "com.instantiations.eclipse.analysis.audit.webservices.requestMessageNamingConvention.match", new String[] {
+                                    nameValue
+                                });
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public RequestMessageNamingConventionCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public RequestMessageNamingConventionAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new RequestMessageNamingConventionCodeAuditor(context, this);
+    }
+
+    private static final String TAG_NAME = "wsdl:operation";
+    private static final String INNER_TAGS[] = {
+        "wsdl:input", "wsdl:output", "wsdl:fault"
+    };
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.requestMessageNamingConvention.match";
+
+
+}

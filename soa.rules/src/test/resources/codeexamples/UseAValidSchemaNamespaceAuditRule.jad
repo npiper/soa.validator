@@ -1,0 +1,68 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   UseAValidSchemaNamespaceAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            AuditRuleWithStringList, SimpleViolationForXMLCodeAuditor
+
+public class UseAValidSchemaNamespaceAuditRule extends AuditRuleWithStringList
+{
+    public class UseAValidSchemaNamespaceCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String fullTagName = node.getTagName();
+            String fullTagNameSplit[] = StringUtilities.splitString(fullTagName, ":", true);
+            String tagName = fullTagNameSplit[fullTagNameSplit.length - 1];
+            if(!tagName.equals("schema"))
+                return true;
+            String value = node.getValue("targetNamespace");
+            boolean violated = false;
+            if(value == null)
+                violated = true;
+            else
+            if(!containPrefix(value))
+                violated = true;
+            if(violated)
+            {
+                String source = node.getSource();
+                int start = source.indexOf("targetNamespace");
+                int tagStart = source.indexOf(fullTagName);
+                int sourcePos = node.getSourcePosition();
+                int startPos = Math.max(0, ((sourcePos - 1) + start) - (tagStart - 1));
+                int endPos = startPos + "targetNamespace".length();
+                createViolation(startPos, endPos, "com.instantiations.eclipse.analysis.audit.webservices.useAValidSchemaNamespace.use", splitString);
+            }
+            return true;
+        }
+
+        public UseAValidSchemaNamespaceCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            SimpleViolationForXMLCodeAuditor(context, item);
+        }
+    }
+
+
+    public UseAValidSchemaNamespaceAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new UseAValidSchemaNamespaceCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_NAMESPACE = "targetNamespace";
+    private static final String TARGET_TAG = "schema";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.useAValidSchemaNamespace.use";
+
+}

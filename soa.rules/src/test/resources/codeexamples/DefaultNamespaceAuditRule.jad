@@ -1,0 +1,79 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   DefaultNamespaceAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class DefaultNamespaceAuditRule extends XMLFileAuditRule
+{
+    private class DefaultNamespaceCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitTagName[] = StringUtilities.splitString(tagName, ":", true);
+            if(splitTagName.length == 0)
+                return true;
+            String focus = splitTagName[splitTagName.length - 1];
+            if("schema".equals(focus))
+            {
+                String attributes[] = node.getAttributeNames();
+                for(int i = 0; i < attributes.length; i++)
+                {
+                    String attr = attributes[i];
+                    String value = node.getValue(attr);
+                    if(value != null && "http://www.w3.org/2001/XMLSchema".equals(value))
+                    {
+                        String splitedAttrName[] = StringUtilities.splitString(attr, ":", true);
+                        String def = splitedAttrName[0];
+                        int lenght = splitedAttrName.length;
+                        if(lenght > 1 && "xmlns".equals(def))
+                        {
+                            String source = node.getSource();
+                            int start = source.indexOf(attr);
+                            int tagStart = source.indexOf(tagName);
+                            int sourcePos = node.getSourcePosition();
+                            int startPos = ((sourcePos - 1) + start) - (tagStart - 1);
+                            int endPos = startPos + attr.length();
+                            createViolation(startPos, endPos, "com.instantiations.eclipse.analysis.audit.webservices.defaultNamespace.default", _22_schema_22_);
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public DefaultNamespaceCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            SimpleViolationForXMLCodeAuditor(context, item);
+        }
+    }
+
+
+    public DefaultNamespaceAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new DefaultNamespaceCodeAuditor(context, this);
+    }
+
+    private static final String SCHEMA_TAG = "schema";
+    private static final String DEFAULT_NAMESPACE = "xmlns";
+    private static final String DEFAULT_VALUE = "http://www.w3.org/2001/XMLSchema";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.defaultNamespace.default";
+
+}

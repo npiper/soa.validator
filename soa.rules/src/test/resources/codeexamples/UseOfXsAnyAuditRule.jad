@@ -1,0 +1,72 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   UseOfXsAnyAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class UseOfXsAnyAuditRule extends XMLFileAuditRule
+{
+    private class SchemaAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            if("xs:any".equals(tagName))
+                createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.useOfXsAny.use", equals);
+            return true;
+        }
+
+        public SchemaAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+    private class UseOfXsAnyCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splited[] = StringUtilities.splitString(tagName, ":", true);
+            String focus = splited[splited.length - 1];
+            if(focus.equals("schema"))
+            {
+                SchemaAuditor auditor = new SchemaAuditor(context, item);
+                node.accept(auditor);
+            }
+            return true;
+        }
+
+        public UseOfXsAnyCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public UseOfXsAnyAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new UseOfXsAnyCodeAuditor(context, this);
+    }
+
+    private static final String SCHEMA_TAG = "schema";
+    private static final String TARGET_TAG = "xs:any";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.useOfXsAny.use";
+
+}

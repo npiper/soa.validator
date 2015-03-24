@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="f3133454-74b2-4bac-bf81-cf58b7f1a50f" activeEnvironment="Default" name="testXSD" resourceRoot="" soapui-version="5.1.2" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="6587bfa7-95ae-46aa-8e8c-e1dc6bc3015b" wsaVersion="NONE" name="NewWSDLFileSOAP" type="wsdl" bindingName="{http://www.example.org/NewWSDLFile/}NewWSDLFileSOAP" soapVersion="1_1" anonymous="optional" definition="file:/Users/neilpiper/SANDBOX/soa.validator/soa.rules/src/test/resources/testxml/NewWSDLFile.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/neilpiper/SANDBOX/soa.validator/soa.rules/src/test/resources/testxml/NewWSDLFile.wsdl"><con:part><con:url>file:/Users/neilpiper/SANDBOX/soa.validator/soa.rules/src/test/resources/testxml/NewWSDLFile.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="NewWSDLFile" targetNamespace="http://www.example.org/NewWSDLFile/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/NewWSDLFile/" xmlns:tns1="http://www.example.org/TestXMLExamples" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/NewWSDLFile/">
+      <xsd:import namespace="http://www.example.org/TestXMLExamples" schemaLocation="../TestXMLExamples.xsd"/>
+      <xsd:element name="NewOperation">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="tns1:NewComplexType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperationResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="out" type="tns1:NewComplexType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="NewOperationRequest">
+    <wsdl:part element="tns:NewOperation" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="NewOperationResponse">
+    <wsdl:part element="tns:NewOperationResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="NewWSDLFile">
+    <wsdl:operation name="NewOperation">
+      <wsdl:input message="tns:NewOperationRequest"/>
+      <wsdl:output message="tns:NewOperationResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NewWSDLFileSOAP" type="tns:NewWSDLFile">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="NewOperation">
+      <soap:operation soapAction="http://www.example.org/NewWSDLFile/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NewWSDLFile">
+    <wsdl:port binding="tns:NewWSDLFileSOAP" name="NewWSDLFileSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/Users/neilpiper/SANDBOX/soa.validator/soa.rules/src/test/resources/TestXMLExamples.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="http://www.example.org/TestXMLExamples" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/TestXMLExamples">
+  <!--Should flag violation of element name for ComplexTypes-->
+  <xs:element name="jimBob" type="tns:NewComplexType"/>
+  <xs:complexType name="NewComplexType">
+    <xs:sequence>
+      <xs:element name="aa" type="xs:string"/>
+      <xs:element name="bb" type="xs:integer"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://Neils-MacBook-Pro.local:8088/mockNewWSDLFileSOAP</con:endpoint><con:endpoint>http://www.example.org/</con:endpoint></con:endpoints><con:operation id="523fb324-42ed-4340-aae8-77dd2568f454" isOneWay="false" action="http://www.example.org/NewWSDLFile/NewOperation" name="NewOperation" bindingOperationName="NewOperation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="6c4d9f40-17d0-457a-9328-c83489e3f339" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8088/mockNewWSDLFileSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:new="http://www.example.org/NewWSDLFile/" xmlns:tes="http://www.example.org/TestXMLExamples">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <new:NewOperation>
+         <in>
+            <tes:aa>?</tes:aa>
+            <tes:bb>?</tes:bb>
+         </in>
+      </new:NewOperation>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.example.org/NewWSDLFile/NewOperation"/><con:wsrmConfig version="1.2"/></con:call><con:call id="bf30eeed-d75c-4432-9301-0c74499db92e" name="Request 2"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://www.example.org/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:new="http://www.example.org/NewWSDLFile/" xmlns:tes="http://www.example.org/TestXMLExamples">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <new:NewOperation>
+         <in>
+            <tes:aa>?</tes:aa>
+            <tes:bb>?</tes:bb>
+         </in>
+      </new:NewOperation>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.example.org/NewWSDLFile/NewOperation"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="e7cfea64-69fb-44b8-82e3-d2b6e9fb8d65" name="NewWSDLFileSOAP TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="29dcacd4-e5c0-4f38-b597-475cc4f51331" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="NewOperation TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="6e006ee3-fd44-4eb1-bdcf-c859fd58f0fe" name="NewOperation"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>NewWSDLFileSOAP</con:interface><con:operation>NewOperation</con:operation><con:request name="NewOperation" id="4ff7fa68-d966-486a-9c2d-830675727d61"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://Neils-MacBook-Pro.local:8088/mockNewWSDLFileSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:new="http://www.example.org/NewWSDLFile/" xmlns:tes="http://www.example.org/TestXMLExamples">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <new:NewOperation>
+         <in>
+            <tes:aa>?</tes:aa>
+            <tes:bb>?</tes:bb>
+         </in>
+      </new:NewOperation>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="XPath Match" id="13c53577-2b29-4659-9698-d66e26ac1eb4" name="XPath Match"><con:configuration><path/><content/><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.example.org/NewWSDLFile/NewOperation" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:mockService id="1261bdc3-ead9-4990-aa3a-e629cb908d20" port="8088" path="/mockNewWSDLFileSOAP" host="Neils-MacBook-Pro.local" name="NewWSDLFileSOAP MockService" bindToHostOnly="false" docroot=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:properties/><con:mockOperation name="NewOperation" id="0fd2e3b6-8f49-43a1-81c6-0180e1016a99" interface="NewWSDLFileSOAP" operation="NewOperation"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="051f7001-eaae-456c-b58a-42ce4e69a41a" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:new="http://www.example.org/NewWSDLFile/" xmlns:tes="http://www.example.org/TestXMLExamples">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <new:NewOperationResponse>
+         <out>
+            <tes:aa>?</tes:aa>
+            <tes:bb>?</tes:bb>
+         </out>
+      </new:NewOperationResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.example.org/NewWSDLFile/NewOperation"/></con:response><con:dispatchConfig/></con:mockOperation></con:mockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

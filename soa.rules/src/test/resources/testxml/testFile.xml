@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:jimBob xmlns:tns="http://www.example.org/TestXMLExamples" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/TestXMLExamples ../TestXMLExamples.xsd ">
+  <tns:aa>Bob Dobolina</tns:aa>
+  <tns:bb>0</tns:bb>
+  
+</tns:jimBob>

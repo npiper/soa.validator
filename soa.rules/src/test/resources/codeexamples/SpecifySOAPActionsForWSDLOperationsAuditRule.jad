@@ -1,0 +1,53 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   SpecifySOAPActionsForWSDLOperationsAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class SpecifySOAPActionsForWSDLOperationsAuditRule extends XMLFileAuditRule
+{
+    public class SpecifySOAPActionsForWSDLOperationsCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            if("wsdlsoap:operation".equals(tagName))
+            {
+                String value = node.getValue("soapAction");
+                if(value == null || value.length() == 0)
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.specifySOAPActionsForWSDLOperations.specify", equals);
+            }
+            return true;
+        }
+
+        public SpecifySOAPActionsForWSDLOperationsCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public SpecifySOAPActionsForWSDLOperationsAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new SpecifySOAPActionsForWSDLOperationsCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG = "wsdlsoap:operation";
+    private static final String TARGET_ATTR = "soapAction";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.specifySOAPActionsForWSDLOperations.specify";
+
+}

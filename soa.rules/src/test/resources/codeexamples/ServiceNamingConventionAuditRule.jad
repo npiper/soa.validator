@@ -1,0 +1,70 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   ServiceNamingConventionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            NamingConventionAuditRule, SimpleViolationForXMLCodeAuditor
+
+public class ServiceNamingConventionAuditRule extends NamingConventionAuditRule
+{
+    public class ServiceNamingConventionCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            if("wsdl:service".equals(tagName))
+            {
+                String name = node.getValue("name");
+                if(name == null)
+                    return true;
+                boolean flag = false;
+                if(!name.endsWith("Service") || name.indexOf("_") != -1 || !Character.isUpperCase(name.charAt(0)))
+                    flag = true;
+                String wordList[] = getWords();
+                for(int i = 0; i < wordList.length; i++)
+                    if(name.indexOf(wordList[i]) != -1)
+                        flag = true;
+
+                if(flag)
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.serviceNamingConvention.match", new String[] {
+                        name
+                    });
+            }
+            return true;
+        }
+
+        public ServiceNamingConventionCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public ServiceNamingConventionAuditRule()
+    {
+    }
+
+    public String[] getDefaultServiceWords()
+    {
+        return DEFAULT_WORDS;
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new ServiceNamingConventionCodeAuditor(context, this);
+    }
+
+    private static final String DEFAULT_WORDS[] = {
+        "Entity", "Application", "Business", "Utility", "Integration", "Wrapper"
+    };
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.serviceNamingConvention.match";
+    private static final String TARGET_TAG = "wsdl:service";
+
+}

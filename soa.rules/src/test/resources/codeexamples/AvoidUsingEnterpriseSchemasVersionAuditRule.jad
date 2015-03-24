@@ -1,0 +1,73 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   AvoidUsingEnterpriseSchemasVersionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.assist.eclipse.analysis.engine.xml.XMLFileAnalysisTarget;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLDocument;
+import org.eclipse.core.resources.IResource;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class AvoidUsingEnterpriseSchemasVersionAuditRule extends XMLFileAuditRule
+{
+    public class AvoidUsingEnterpriseSchemasVersionCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLDocument node)
+        {
+            AnalysisTarget target = getContext().getCurrentTarget();
+            if(isAppropriateFor(target))
+            {
+                String name = target.getName();
+                if(name.indexOf("Enterprise_") != -1)
+                {
+                    String splitedName[] = StringUtilities.splitString(name, "v", true);
+                    String focus = splitedName[splitedName.length - 1];
+                    boolean flag = false;
+                    for(int i = 0; i < focus.length(); i++)
+                        if(Character.isDigit(focus.charAt(i)))
+                            flag = true;
+
+                    if(flag)
+                        createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.avoidUsingEnterpriseSchemasVersion.avoid", 
+// JavaClassFileOutputException: get_constant: invalid tag
+
+        public AvoidUsingEnterpriseSchemasVersionCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public AvoidUsingEnterpriseSchemasVersionAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new AvoidUsingEnterpriseSchemasVersionCodeAuditor(context, this);
+    }
+
+    public boolean isAppropriateFor(AnalysisTarget target)
+    {
+        if(!isAppropriateFor(target))
+            return false;
+        IResource resource = ((XMLFileAnalysisTarget)target).getResource();
+        if(resource == null)
+            return false;
+        else
+            return StringUtilities.matches("*.xsd", resource.getName());
+    }
+
+    private final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.avoidUsingEnterpriseSchemasVersion.avoid";
+    private final String ENTERPRISE = "Enterprise_";
+
+}

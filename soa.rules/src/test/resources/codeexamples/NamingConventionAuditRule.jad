@@ -1,0 +1,80 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   NamingConventionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import java.util.Arrays;
+import org.eclipse.core.runtime.Preferences;
+
+public abstract class NamingConventionAuditRule extends XMLFileAuditRule
+{
+
+    public NamingConventionAuditRule()
+    {
+    }
+
+    public abstract String[] getDefaultServiceWords();
+
+    public String[] getWords()
+    {
+        String preferenceName = getPreferenceIdentifier() + ".wordsList";
+        getPreferenceStore().setDefault(preferenceName, toString(getDefaultServiceWords()));
+        String value = getPreferenceStore().getString(preferenceName);
+        String info[];
+        if(value.length() == 0)
+            info = new String[0];
+        else
+            info = StringUtilities.splitString(value, ";", true);
+        return (String[])info.clone();
+    }
+
+    public void setWords(String words[])
+    {
+        String preferenceName = getPreferenceIdentifier() + ".wordsList";
+        getPreferenceStore().setValue(preferenceName, toString(words));
+        wordList = words;
+    }
+
+    public void addWord(String signature)
+    {
+        int count = wordList.length;
+        String newWordsList[] = new String[count + 1];
+        System.arraycopy(wordList, 0, newWordsList, 0, count);
+        newWordsList[count] = signature;
+        Arrays.sort(newWordsList, String.CASE_INSENSITIVE_ORDER);
+        setWords(newWordsList);
+    }
+
+    protected String toString(String list[])
+    {
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < list.length; i++)
+        {
+            if(i > 0)
+                buffer.append(';');
+            buffer.append(list[i]);
+        }
+
+        return buffer.toString();
+    }
+
+    public boolean containsWord(String words[], String targetString)
+    {
+        boolean flag = false;
+        for(int i = 0; i < words.length; i++)
+        {
+            boolean tmpFl = targetString.startsWith(words[i]);
+            if(tmpFl)
+                flag = true;
+        }
+
+        return flag;
+    }
+
+    private static final String WORDS_LIST = ".wordsList";
+    private String wordList[];
+}

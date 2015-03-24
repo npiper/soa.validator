@@ -1,0 +1,59 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   ComplexTypeNamingConventionAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class ComplexTypeNamingConventionAuditRule extends XMLFileAuditRule
+{
+    public class ComplexTypeNamingConventionCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitedTN[] = StringUtilities.splitString(tagName, ":", true);
+            String focus = splitedTN[splitedTN.length - 1];
+            if(focus.equals("complexType"))
+            {
+                String name = node.getValue("name");
+                if(name == null)
+                    return true;
+                boolean f1 = name.endsWith("Type");
+                boolean f2 = Character.isUpperCase(name.charAt(0));
+                if(!f1 || !f2)
+                    createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.complexTypeNamingConvention.isComplex", new String[] {
+                        name
+                    });
+            }
+            return true;
+        }
+
+        public ComplexTypeNamingConventionCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            SimpleViolationForXMLCodeAuditor(context, item);
+        }
+    }
+
+
+    public ComplexTypeNamingConventionAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new ComplexTypeNamingConventionCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG = "complexType";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.complexTypeNamingConvention.isComplex";
+}

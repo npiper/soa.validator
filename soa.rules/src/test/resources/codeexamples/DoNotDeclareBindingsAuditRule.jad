@@ -1,0 +1,69 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   DoNotDeclareBindingsAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class DoNotDeclareBindingsAuditRule extends XMLFileAuditRule
+{
+    private class DoNotDeclareBindingsCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitedTN[] = StringUtilities.splitString(tagName, ":", true);
+            String focus = splitedTN[splitedTN.length - 1];
+            if(focus.equals("binding"))
+            {
+                com.instantiations.jlib.xml.XMLNode xmlNode = node.getParent();
+                if(xmlNode instanceof XMLElement)
+                {
+                    XMLElement parent = (XMLElement)xmlNode;
+                    String parentName = parent.getTagName();
+                    String parentSplited[] = StringUtilities.splitString(parentName, ":", true);
+                    String focusParent = parentSplited[parentSplited.length - 1];
+                    boolean flag = false;
+                    for(int i = 0; i < DoNotDeclareBindingsAuditRule.TARGET_TAGS.length; i++)
+                        if(DoNotDeclareBindingsAuditRule.TARGET_TAGS[i].equals(focusParent))
+                            flag = true;
+
+                    if(flag)
+                        createViolation(node, "com.instantiations.eclipse.analysis.audit.webservices.doNotDeclareBindings.declare", 
+// JavaClassFileOutputException: get_constant: invalid tag
+
+        public DoNotDeclareBindingsCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            super(context, item);
+        }
+    }
+
+
+    public DoNotDeclareBindingsAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new DoNotDeclareBindingsCodeAuditor(context, this);
+    }
+
+    private static final String TARGET_TAG_NAME = "binding";
+    private static final String TARGET_TAGS[] = {
+        "schema", "definitions"
+    };
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.doNotDeclareBindings.declare";
+
+
+
+}

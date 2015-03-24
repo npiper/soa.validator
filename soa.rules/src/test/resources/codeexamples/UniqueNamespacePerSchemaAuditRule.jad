@@ -1,0 +1,97 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   UniqueNamespacePerSchemaAuditRule.java
+
+package com.instantiations.eclipse.analysis.audit.webservices;
+
+import com.instantiations.assist.eclipse.analysis.audit.core.AbstractAuditRule;
+import com.instantiations.assist.eclipse.analysis.audit.rule.XMLFileAuditRule;
+import com.instantiations.assist.eclipse.analysis.engine.core.*;
+import com.instantiations.eclipse.analysis.utilities.StringUtilities;
+import com.instantiations.jlib.xml.XMLElement;
+import java.util.LinkedList;
+
+// Referenced classes of package com.instantiations.eclipse.analysis.audit.webservices:
+//            SimpleViolationForXMLCodeAuditor
+
+public class UniqueNamespacePerSchemaAuditRule extends XMLFileAuditRule
+{
+    private class DefinitionsAnalyser extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitTagName[] = StringUtilities.splitString(tagName, ":", true);
+            if(splitTagName.length == 0)
+                return true;
+            String focus = splitTagName[splitTagName.length - 1];
+            if("schema".equals(focus))
+            {
+                String targetNamespace = node.getValue("targetNamespace");
+                if(targetNamespace == null)
+                    return true;
+                if(!schemasTargertNamespace.contains(targetNamespace))
+                {
+                    schemasTargertNamespace.add(targetNamespace);
+                } else
+                {
+                    String source = node.getSource();
+                    int start = source.indexOf("targetNamespace");
+                    int tagStart = source.indexOf(tagName);
+                    int sourcePos = node.getSourcePosition();
+                    int startPos = ((sourcePos - 1) + start) - (tagStart - 1);
+                    int endPos = startPos + "targetNamespace".length();
+                    createViolation(startPos, endPos, "com.instantiations.eclipse.analysis.audit.webservices.uniqueNamespacePerSchema.uniq", 
+// JavaClassFileOutputException: get_constant: invalid tag
+
+        private LinkedList schemasTargertNamespace;
+
+        public DefinitionsAnalyser(AnalysisContext context, AnalysisItem item)
+        {
+            SimpleViolationForXMLCodeAuditor(context, item);
+            schemasTargertNamespace = new LinkedList();
+        }
+    }
+
+    private class UniqueNamespacePerSchemaCodeAuditor extends SimpleViolationForXMLCodeAuditor
+    {
+
+        public boolean visit(XMLElement node)
+        {
+            String tagName = node.getTagName();
+            String splitTagName[] = StringUtilities.splitString(tagName, ":", true);
+            if(splitTagName.length == 0)
+                return true;
+            String focus = splitTagName[splitTagName.length - 1];
+            if("definitions".equals(focus))
+            {
+                DefinitionsAnalyser analyser = new DefinitionsAnalyser(context, item);
+                node.accept(analyser);
+            }
+            return true;
+        }
+
+        public UniqueNamespacePerSchemaCodeAuditor(AnalysisContext context, AnalysisItem item)
+        {
+            SimpleViolationForXMLCodeAuditor(context, item);
+        }
+    }
+
+
+    public UniqueNamespacePerSchemaAuditRule()
+    {
+    }
+
+    public Analyzer createAnalyzer(AnalysisContext context)
+    {
+        return new UniqueNamespacePerSchemaCodeAuditor(context, this);
+    }
+
+    private static final String DEFINITIONS_TAG = "definitions";
+    private static final String SCHEMA_TAG = "schema";
+    private static final String TARGET_NAMESPACE = "targetNamespace";
+    private static final String VIOLATION_ID = "com.instantiations.eclipse.analysis.audit.webservices.uniqueNamespacePerSchema.uniq";
+
+}
