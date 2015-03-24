@@ -13,7 +13,7 @@ message='Use upper camel case when naming elements that are complex types. This 
 <properties>
 <property name="xpath">
 <value><![CDATA[
-fn:matches(substring(complexType[@name],1,1),'[A-Z]')
+substring(complexType[@name],1,1),'K')
 ]]></value>
 </property>
 </properties>
