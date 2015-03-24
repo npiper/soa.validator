@@ -49,13 +49,14 @@
             <configuration>
 <target name="pmd">
  <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask"/>
- <pmd shortFilenames="true">
+ <pmd shortFilenames="true" failOnError="true">
   <sourceLanguage name="xml" version=""/>
 				 <!-- <ruleset>rulesets/xml/basic.xml</ruleset>   --> 
 						<ruleset>target/pmdrules/ComplexTypeNamingConvention.xml</ruleset>
 			 <formatter type="html" toFile="pmd_report.html">
     <param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
   </formatter>
+
   <fileset dir="src/main/resources">
    <include name="*.xml"/>
   </fileset>

@@ -13,13 +13,15 @@ message='Use upper camel case when naming elements that are complex types. This 
 <properties>
 <property name="xpath">
 <value><![CDATA[
-true()
+schema/complexType[@id]
 ]]></value>
 </property>
+<!-- xs:schema/xs:complexType[@name]
+ -->
 </properties>
     <example>
  <![CDATA[
- Example text
+ The validation of the complex type naming convention failed.
  ]]>
      </example>
 </rule>
