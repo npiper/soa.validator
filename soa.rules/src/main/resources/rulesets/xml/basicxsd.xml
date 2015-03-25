@@ -58,4 +58,37 @@ schema/element[not(@id)]
  ]]>
      </example>
 </rule>
+
+
+    <rule name="UseOfXSAnyType" since="5.0" language="xml"
+message='This audit rule looks for any usage of &lt;xs:any&gt;. Using &lt;xs:any&gt; causes validation complications, and can require excessive code to ensure proper values are passed in schemas.'
+         class="net.sourceforge.pmd.lang.rule.XPathRule"
+         externalInfoUrl="https://developers.google.com/java-dev-tools/codepro/doc/features/audit/audit_rules_com.instantiations.assist.eclipse.auditGroup.configurationFiles.webservices#com.instantiations.eclipse.analysis.audit.webservices.useOfXsAny">
+
+<priority>1</priority>
+<properties>
+<property name="xpath">
+<value><![CDATA[
+schema/element/complexType/sequence/any
+]]></value>
+</property>
+<!-- xs:schema/xs:complexType[@name]
+ -->
+</properties>
+    <example>
+ <![CDATA[
+ The following element declaration uses <xs:any> and would thus be marked as a violation:
+
+    <xs:element name="person">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="firstname" type="xs:string"/>
+                <xs:element name="lastname" type="xs:string"/>
+                <xs:any minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+ ]]>
+     </example>
+</rule>
 </ruleset>
