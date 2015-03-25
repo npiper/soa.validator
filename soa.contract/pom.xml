@@ -51,7 +51,7 @@
  <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask"/>
  <pmd shortFilenames="true" failOnError="true">
   <sourceLanguage name="xml" version=""/>
-				 <!-- <ruleset>rulesets/xml/basic.xml</ruleset>   --> 
+				        <ruleset>target/pmdrules/rulesets/xml/basic.xml</ruleset>   --> 
 						<ruleset>target/pmdrules/ComplexTypeNamingConvention.xml</ruleset>
 			 <formatter type="html" toFile="pmd_report.html">
     <param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
@@ -76,11 +76,7 @@
 	<version>5.2.3</version>
 </dependency>
 
-<dependency>
-	<groupId>net.sourceforge.pmd</groupId>
-	<artifactId>pmd-java</artifactId>
-	<version>5.2.3</version>
-</dependency>
+
 
 <dependency>
 	<groupId>net.sourceforge.pmd</groupId>
