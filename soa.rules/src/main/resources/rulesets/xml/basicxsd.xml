@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 
-<ruleset name="Basic XML"
+<ruleset name="Basic XSD Validation"
     xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
   <description>
-The Basic XML Ruleset contains a collection of good practices which everyone should follow.
+The Basic XSD Ruleset contains a collection of good practices which everyone should follow when designing an XSD to IAG standard.
   </description>
 
+<!-- 
 	<rule name="MistypedCDATASection"
     		language="xml"
     		since="5.0"
@@ -33,7 +34,8 @@ An extra [ looks like &lt;!CDATA[[]]&gt;, and an extra ] looks like &lt;!CDATA[]
  ]]>
      </example>
      </rule>
-     
+      -->
+      
      <!-- TEST RULE -->
      <rule name="ComplexTypeElementNamingConvention" since="5.0" language="xml"
 message='Use upper camel case when naming elements that are complex types. This audit rule looks for declarations of complex type names that are not using upper camel case as per IAG convention.'
@@ -44,7 +46,7 @@ message='Use upper camel case when naming elements that are complex types. This 
 <properties>
 <property name="xpath">
 <value><![CDATA[
-adfc-config/task-flow-definition[not(transaction)]
+schema/element[not(@id)]
 ]]></value>
 </property>
 <!-- xs:schema/xs:complexType[@name]

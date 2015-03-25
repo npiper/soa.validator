@@ -5,7 +5,7 @@ import org.junit.Before;
 
 public class ComplexTypeNamingConventionTest extends SimpleAggregatorTst {
 
-	private static final String RULESET = "xml-basic";
+	private static final String RULESET = "xml-basicxsd";
 
     @Before
     public void setUp() {

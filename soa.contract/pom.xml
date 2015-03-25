@@ -51,9 +51,9 @@
  <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask"/>
  <pmd shortFilenames="true" failOnError="true">
   <sourceLanguage name="xml" version=""/>
-				        <ruleset>target/pmdrules/rulesets/xml/basic.xml</ruleset>   --> 
-						<ruleset>target/pmdrules/ComplexTypeNamingConvention.xml</ruleset>
-			 <formatter type="html" toFile="pmd_report.html">
+				        <ruleset>target/pmdrules/rulesets/xml/basicxsd.xml</ruleset>   --> 
+						<ruleset>target/pmdrules/rulesets/xml/oracleValidation.xml</ruleset>
+			 <formatter type="html" toFile="target/pmd_report.html">
     <param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
   </formatter>
 

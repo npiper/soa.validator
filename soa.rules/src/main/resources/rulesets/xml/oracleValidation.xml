@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<ruleset name="Oracle validation XML"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+  <description>
+Oracle XML Validation ruleset contains a collection of good practices which everyone should follow based on the ADF coding standards.
+  </description>
+
+     <!-- TEST RULE -->
+     <rule name="OracleAdfTaskflowShouldNotHaveAControllerTransaction" since="5.0" language="xml"
+message='ADF tasklows should normally not contain transaction behavior &quot;No Controller Transaction&quot;'
+         class="net.sourceforge.pmd.lang.rule.XPathRule"
+         externalInfoUrl="http://www.oracle.com/technetwork/developer-tools/adf/learnmore/adf-code-guidelines-v1-00-1845659.pdf">
+<priority>1</priority>
+<properties>
+<property name="xpath">
+<value><![CDATA[
+adfc-config/task-flow-definition[not(transaction)]
+]]></value>
+</property>
+<!-- xs:schema/xs:complexType[@name]
+ -->
+</properties>
+    <example>
+ <![CDATA[
+ The validation of the Oracle ADF Flow failed, due to it introducing a Transaction in a Flow. Ref #ADFcg1-03099
+ ]]>
+     </example>
+</rule>
+</ruleset>

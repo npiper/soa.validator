@@ -1,37 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <test-data>
 	<test-code>
-		<description>Oracle test case - did it define a new transaction?</description>
+		<description>ID in a schema element definition?</description>
 		<expected-problems>0</expected-problems>
 		<code><![CDATA[
-<adfc-config xmlns="http://xmlns.oracle.com/adf/Controller" version="1.2">
-  <task-flow-definition id="task-flow-definition">
-    <transaction>
-      <new-transaction/>
-    </transaction>
-  </task-flow-definition>
-</adfc-config>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+   <element name="jimBob" id="123" type="string">
+ </element>
+</schema>
      ]]></code>
 		<source-type>xml</source-type>
 	</test-code>
 	
-	
-		<test-code>
-		<description>Test Oracle XML - without a &lt;transaction&gt; node in flow.</description>
-		<expected-problems>1</expected-problems>
-		<code><![CDATA[
-<adfc-config xmlns="http://xmlns.oracle.com/adf/Controller" version="1.2">
-  <task-flow-definition id="task-flow-definition">
-   <use-page-fragments/>
-    <task-flow-call id="taskFlowCall">
-      <task-flow-reference>
-        <document>/WEB-INF/target-task-flow-definition.xml</document>
-        <id>my-task-flow</id>
-      </task-flow-reference>
-    </task-flow-call>  
-  </task-flow-definition>
-</adfc-config>
-     ]]></code>
-		<source-type>xml</source-type>
-	</test-code>
+
 </test-data>
