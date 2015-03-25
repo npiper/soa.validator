@@ -5,4 +5,38 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>rules</name>
   <description>Soa Rules for validation</description>
+  <properties>
+    <pmd.version>5.2.3</pmd.version>
+  </properties>
+  <dependencies>
+  
+  <dependency>
+	<groupId>net.sourceforge.pmd</groupId>
+	<artifactId>pmd-core</artifactId>
+	<version>${pmd.version}</version>
+	<scope>test</scope>
+</dependency>
+
+<dependency>
+	<groupId>net.sourceforge.pmd</groupId>
+	<artifactId>pmd-test</artifactId>
+	<version>${pmd.version}</version>
+	<scope>test</scope>
+</dependency>
+
+
+<dependency>
+	<groupId>net.sourceforge.pmd</groupId>
+	<artifactId>pmd-java</artifactId>
+	<version>${pmd.version}</version>
+	<scope>test</scope>
+</dependency>
+<dependency>
+	<groupId>net.sourceforge.pmd</groupId>
+	<artifactId>pmd-xml</artifactId>
+	<version>${pmd.version}</version>
+	<scope>test</scope>
+</dependency>
+  
+  </dependencies>
 </project>
