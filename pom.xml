@@ -10,4 +10,20 @@
   	<module>soa.rules</module>
   	<module>soa.contract</module>
   </modules>
+
+<distributionManagement>
+    <repository>
+      <id>release-local</id>
+      <name>release-local</name>
+      <url>http://solvepuzzledev-repo:8080/artifactory/libs-release-local</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>snapshot-local</id>
+      <name>snapshot-locao</name>
+      <url>http://solvepuzzledev-repo:8080/artifactory/libs-snapshot-local</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+
 </project>

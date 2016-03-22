@@ -5,6 +5,13 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>rules</name>
   <description>Soa Rules for validation</description>
+  <parent>
+<groupId>com.solveapuzzle</groupId>
+  <artifactId>soa.validator</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</parent> 
+
+
   <properties>
     <pmd.version>5.2.3</pmd.version>
   </properties>

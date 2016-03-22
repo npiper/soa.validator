@@ -7,6 +7,12 @@
 	<name>contract</name>
 	<description>SOA Contracts to validate</description>
 
+  <parent>
+<groupId>com.solveapuzzle</groupId>
+  <artifactId>soa.validator</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</parent>
+
 	<build>
 		<plugins>
 
