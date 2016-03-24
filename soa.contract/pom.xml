@@ -34,7 +34,8 @@
 								<artifactItem>
 									<groupId>com.solveapuzzle.soa.validator</groupId>
 									<artifactId>rules</artifactId>
-									<version>0-SNAPSHOT</version>
+									<!-- Inherit the project version -->
+									<version>${project.version}</version>
 									<type>jar</type>
 									<overWrite>true</overWrite>
 									<!-- <excludes>**/*.sql,**/*.SQL,**/*.Sql,**/*.properties,**/*.MF</excludes> -->
