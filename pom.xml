@@ -108,6 +108,7 @@
 
 <!-- Example:  -->
 <!-- https://axelfontaine.com/blog/final-nail.html -->
+<!-- https://github.github.com/maven-plugins/site-plugin/authentication.html -->
 <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>versions-maven-plugin</artifactId>
