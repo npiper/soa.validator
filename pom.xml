@@ -106,6 +106,21 @@
         </executions>
       </plugin>
 
+<!-- Example:  -->
+<!-- https://axelfontaine.com/blog/final-nail.html -->
+<plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>versions-maven-plugin</artifactId>
+            <version>2.1</version>
+        </plugin>
+        <plugin>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.8.1</version>
+            <configuration>
+                <tag>${project.artifactId}-${project.version}</tag>
+            </configuration>
+        </plugin>
+
 
       </plugins>
     </pluginManagement>
@@ -178,9 +193,11 @@
   <!-- Software configuration management details -->
   <!-- Critical for the mvn:release plugin & process, where to find the source code. -->
   <scm>
-    <connection>scm:git:https://github.com/npiper/${project.name}.git</connection>
+    <connection>scm:git:https://github.com/npiper/soa.validator.git</connection>
+   <!--
     <developerConnection>scm:git:npiper@github.com:npiper/${project.name}.git</developerConnection>
     <url>https://github.com/npiper/${project.name}/</url>
+  -->
   </scm>
 
 <!-- REPOSITORIES & PLUGIN REPOSITORIES -->
